@@ -1,41 +1,5 @@
 import scala.language.implicitConversions
 
-case class Container(num: Float)
-
-trait Mapper[A, B] {
-  def map(a: A): B
-}
-
-object ImplicitConversions {
-  implicit val containerToInt: Mapper[Container, Int] =
-    new Mapper[Container, Int] {
-      def map(cont: Container) = cont.num.toInt
-    }
-
-  implicit def floatToInt(x: Float) =
-    x.toInt
-
-  implicit def listAToB[A, B](ls: List[A])(implicit m: Mapper[A, B]): List[B] =
-    ls.map(m.map)
-}
-
-trait Monoid[A] {
-  def add(x: A, y: A): A
-  def unit: A
-}
-
-object ImplicitMonoids {
-  implicit val stringMonoid: Monoid[String] = new Monoid[String] {
-    def add(x: String, y: String): String = x concat y
-    def unit: String = ""
-  }
-
-  implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
-    def add(x: Int, y: Int): Int = x + y
-    def unit: Int = 0
-  }
-}
-
 object Main extends App {
   import ImplicitConversions._
   import ImplicitMonoids._
